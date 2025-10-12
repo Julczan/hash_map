@@ -1,13 +1,60 @@
+class Node {
+  constructor(key, value = null, next = null) {
+    this.key = key;
+    this.value = value;
+    this.next = next;
+  }
+}
+
+class linkedList {
+  constructor() {
+    this.head = null;
+  }
+  append(key, value) {
+    if (this.head === null) {
+      this.prepend(key, value);
+    } else {
+      this.tmp = this.head;
+      while (this.tmp.next !== null) {
+        this.tmp = this.tmp.next;
+      }
+      this.tmp.next = new Node(key, value, null);
+    }
+  }
+  prepend(key, value) {
+    this.head = new Node(key, value, this.head);
+  }
+  contains(key) {
+    this.tmp = this.head;
+    while (this.tmp !== null && this.tmp.key !== key) {
+      this.tmp = this.tmp.next;
+    }
+    if (this.tmp !== null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  overwrite(key, value) {
+    this.tmp = this.head;
+    while (this.tmp !== null && this.tmp.key !== key) {
+      this.tmp = this.tmp.next;
+    }
+    if (this.tmp !== null) {
+      this.tmp.value = value;
+    }
+  }
+}
+
 class HashMap {
   constructor() {
     this.loadFactor = 0.75;
     this.capacity = 16;
-    this.buckets = Array(this.capacity);
-  }
-  populateArr(capacity) {
-    for (let i = 0; i <= capacity; i++) {
-      this.buckets[i] = [];
-    }
+    this.buckets = Array.from(
+      { length: this.capacity },
+      () => new linkedList()
+    );
   }
 
   hash(key) {
@@ -21,66 +68,39 @@ class HashMap {
 
     return hashCode;
   }
+
   bucket(key) {
     let hashedKey = this.hash(key);
     return this.buckets[hashedKey];
   }
-  entry(key, bucket) {
-    for (let e of bucket) {
-      if (e.key === key) {
-        return e;
-      }
-    }
-    return null;
+
+  check(key) {
+    let b = this.bucket(key);
+    return b.contains(key);
   }
+
   set(key, value) {
     let b = this.bucket(key);
-    let e = this.entry(key, b);
 
-    if (e) {
-      e.value = value;
+    if (this.check(key)) {
+      b.overwrite(key, value);
       return;
     }
-
-    b.push({ key, value });
-  }
-  get(key) {
-    let b = this.bucket(key);
-    let e = this.entry(key, b);
-
-    if (e) {
-      return e.value;
-    }
-    return null;
-  }
-  has(key) {
-    let b = this.bucket(key);
-    let e = this.entry(key, b);
-
-    if (e) {
-      return true;
-    }
-    return false;
-  }
-  remove(key) {
-    let b = this.bucket(key);
-    let e = this.entry(key, b);
-
-    if (e) {
-      b.pop();
-      return true;
-    }
-    return false;
+    b.append(key, value);
   }
 }
 
-const hashMap = new HashMap();
+const test = new HashMap();
 
-hashMap.populateArr(hashMap.capacity);
+test.set("apple", "red");
+test.set("apple", "green");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
 
-hashMap.set("apple", "red");
-hashMap.set("apple", "green");
+console.log(test.buckets);
 
-console.log(hashMap.remove("apple"));
-
-console.log(hashMap);
+// console.log(test.buckets);
