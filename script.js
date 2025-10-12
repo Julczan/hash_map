@@ -74,6 +74,7 @@ class HashMap {
   constructor() {
     this.loadFactor = 0.75;
     this.capacity = 16;
+    this.count = 0;
     this.buckets = Array.from(
       { length: this.capacity },
       () => new linkedList()
@@ -94,6 +95,9 @@ class HashMap {
 
   bucket(key) {
     let hashedKey = this.hash(key);
+    if (hashedKey < 0 || hashedKey >= this.buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
     return this.buckets[hashedKey];
   }
 
@@ -110,6 +114,7 @@ class HashMap {
       return;
     }
     b.append(key, value);
+    this.count++;
   }
 
   has(key) {
@@ -125,10 +130,14 @@ class HashMap {
     let b = this.bucket(key);
     if (this.has(key)) {
       b.delete(key);
+      this.count--;
       return true;
     } else {
       return false;
     }
+  }
+  length() {
+    return this.count;
   }
 }
 
@@ -143,8 +152,4 @@ test.set("elephant", "gray");
 test.set("frog", "green");
 test.set("grape", "purple");
 
-console.log(test.remove("grape"));
-console.log(test.remove("carrot"));
-console.log(test.remove("apple"));
-
-console.log(test.buckets);
+console.log(test.length());
