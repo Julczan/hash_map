@@ -44,6 +44,15 @@ class HashMap {
 
     b.push({ key, value });
   }
+  get(key) {
+    let b = this.bucket(key);
+    let e = this.entry(key, b);
+
+    if (e) {
+      return e.value;
+    }
+    return null;
+  }
 }
 
 const hashMap = new HashMap();
@@ -53,4 +62,4 @@ hashMap.populateArr(hashMap.capacity);
 hashMap.set("apple", "red");
 hashMap.set("apple", "green");
 
-console.log(hashMap.buckets);
+console.log(hashMap.get("apple"));
