@@ -62,6 +62,16 @@ class HashMap {
     }
     return false;
   }
+  remove(key) {
+    let b = this.bucket(key);
+    let e = this.entry(key, b);
+
+    if (e) {
+      b.pop();
+      return true;
+    }
+    return false;
+  }
 }
 
 const hashMap = new HashMap();
@@ -71,4 +81,6 @@ hashMap.populateArr(hashMap.capacity);
 hashMap.set("apple", "red");
 hashMap.set("apple", "green");
 
-console.log(hashMap.has("apple"));
+console.log(hashMap.remove("apple"));
+
+console.log(hashMap);
