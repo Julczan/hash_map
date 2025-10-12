@@ -21,16 +21,28 @@ class HashMap {
 
     return hashCode;
   }
-  set(key, value) {
+  bucket(key) {
     let hashedKey = this.hash(key);
-    let bucket = this.buckets[hashedKey];
+    return this.buckets[hashedKey];
+  }
+  entry(key, bucket) {
     for (let e of bucket) {
       if (e.key === key) {
-        e.value = value;
-        return;
+        return e;
       }
     }
-    bucket.push({ key, value });
+    return null;
+  }
+  set(key, value) {
+    let b = this.bucket(key);
+    let e = this.entry(key, b);
+
+    if (e) {
+      e.value = value;
+      return;
+    }
+
+    b.push({ key, value });
   }
 }
 
@@ -38,7 +50,7 @@ const hashMap = new HashMap();
 
 hashMap.populateArr(hashMap.capacity);
 
-console.log(hashMap.set("apple", "red"));
-console.log(hashMap.set("apple", "green"));
+hashMap.set("apple", "red");
+hashMap.set("apple", "green");
 
 console.log(hashMap.buckets);
