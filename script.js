@@ -21,18 +21,20 @@ class linkedList {
       this.tmp.next = new Node(key, value, null);
     }
   }
+
   prepend(key, value) {
     this.head = new Node(key, value, this.head);
   }
+
   contains(key) {
     this.tmp = this.head;
     while (this.tmp !== null && this.tmp.key !== key) {
       this.tmp = this.tmp.next;
     }
     if (this.tmp !== null) {
-      return true;
+      return this.tmp.value;
     } else {
-      return false;
+      return null;
     }
   }
 
@@ -44,6 +46,27 @@ class linkedList {
     if (this.tmp !== null) {
       this.tmp.value = value;
     }
+  }
+
+  delete(key) {
+    if (this.head === null) throw new Error("cannot delete");
+
+    if (this.head.key === key) {
+      this.head = this.head.next;
+      return;
+    }
+
+    this.cur = this.head;
+    this.prev = null;
+
+    while (this.cur !== null && this.cur.key !== key) {
+      this.prev = this.cur;
+      this.cur = this.cur.next;
+    }
+
+    if (this.cur === null) throw new Error("cannot delete");
+
+    this.prev.next = this.cur.next;
   }
 }
 
@@ -74,7 +97,7 @@ class HashMap {
     return this.buckets[hashedKey];
   }
 
-  check(key) {
+  get(key) {
     let b = this.bucket(key);
     return b.contains(key);
   }
@@ -82,18 +105,37 @@ class HashMap {
   set(key, value) {
     let b = this.bucket(key);
 
-    if (this.check(key)) {
+    if (this.get(key)) {
       b.overwrite(key, value);
       return;
     }
     b.append(key, value);
+  }
+
+  has(key) {
+    let b = this.bucket(key);
+
+    if (b.contains(key)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  remove(key) {
+    let b = this.bucket(key);
+    if (this.has(key)) {
+      b.delete(key);
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
 const test = new HashMap();
 
 test.set("apple", "red");
-test.set("apple", "green");
+test.set("apple", "brown");
 test.set("banana", "yellow");
 test.set("carrot", "orange");
 test.set("dog", "brown");
@@ -101,6 +143,8 @@ test.set("elephant", "gray");
 test.set("frog", "green");
 test.set("grape", "purple");
 
-console.log(test.buckets);
+console.log(test.remove("grape"));
+console.log(test.remove("carrot"));
+console.log(test.remove("apple"));
 
-// console.log(test.buckets);
+console.log(test.buckets);
