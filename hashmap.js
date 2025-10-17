@@ -72,11 +72,11 @@ class HashMap {
     return this.count;
   }
 
-  keys() {
-    return this.keysArray;
+  clear() {
+    this.capacity = 16;
+    this.count = 0;
+    this.buckets = Array(this.capacity);
   }
-
-  clear() {}
 }
 
 const test = new HashMap();
@@ -94,9 +94,7 @@ test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
 
-console.log(test.remove("apple"));
-console.log(test.remove("elephant"));
-console.log(test.remove("kite"));
+test.clear();
 
 console.log(test.buckets);
 
