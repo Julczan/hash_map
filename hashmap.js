@@ -77,6 +77,15 @@ class HashMap {
     this.count = 0;
     this.buckets = Array(this.capacity);
   }
+
+  keys(key) {
+    let filteredArr = this.buckets.filter((element) => element);
+    let result = [];
+    for (let i = 0; i < filteredArr.length; i++) {
+      result.push(...filteredArr[i].keysArray());
+    }
+    return result;
+  }
 }
 
 const test = new HashMap();
@@ -94,9 +103,7 @@ test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
 
-test.clear();
-
-console.log(test.buckets);
+console.log(test.keys());
 
 // test.set("apple", "brown");
 // test.set("banana", "yellow");

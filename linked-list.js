@@ -86,14 +86,14 @@ class linkedList {
       return null;
     }
   }
-  toString() {
+  keysArray() {
     this.tmp = this.firstNode;
-    this.result = ` ( ${this.tmp.value} ) ->`;
+    this.result = [];
+    this.result.push(this.tmp.key);
     while (this.tmp.nextNode !== null) {
       this.tmp = this.tmp.nextNode;
-      this.result += ` ( ${this.tmp.value} ) ->`;
+      this.result.push(this.tmp.key);
     }
-    this.result += ` null`;
     return this.result;
   }
   insertAt(value, index) {
