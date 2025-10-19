@@ -108,6 +108,18 @@ class linkedList {
     }
     return this.result;
   }
+
+  pairsArray() {
+    this.tmp = this.firstNode;
+    this.result = [];
+    this.result.push([this.tmp.key, this.tmp.value]);
+    while (this.tmp.nextNode !== null) {
+      this.tmp = this.tmp.nextNode;
+      this.result.push([this.tmp.key, this.tmp.value]);
+    }
+    return this.result;
+  }
+
   insertAt(value, index) {
     this.count = 0;
     this.prev = null;
