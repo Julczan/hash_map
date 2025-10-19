@@ -22,6 +22,9 @@ class HashMap {
 
   set(key, value) {
     let hashedKey = this.hash(key);
+    if (hashedKey < 0 || hashedKey >= this.buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
     if (this.buckets[hashedKey]) {
       this.buckets[hashedKey].append(key, value);
       this.count++;
@@ -78,11 +81,20 @@ class HashMap {
     this.buckets = Array(this.capacity);
   }
 
-  keys(key) {
+  keys() {
     let filteredArr = this.buckets.filter((element) => element);
     let result = [];
     for (let i = 0; i < filteredArr.length; i++) {
       result.push(...filteredArr[i].keysArray());
+    }
+    return result;
+  }
+
+  values() {
+    let filteredArr = this.buckets.filter((element) => element);
+    let result = [];
+    for (let i = 0; i < filteredArr.length; i++) {
+      result.push(...filteredArr[i].valuesArray());
     }
     return result;
   }
@@ -103,7 +115,7 @@ test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
 
-console.log(test.keys());
+console.log(test.values());
 
 // test.set("apple", "brown");
 // test.set("banana", "yellow");

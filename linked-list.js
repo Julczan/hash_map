@@ -86,6 +86,7 @@ class linkedList {
       return null;
     }
   }
+
   keysArray() {
     this.tmp = this.firstNode;
     this.result = [];
@@ -93,6 +94,17 @@ class linkedList {
     while (this.tmp.nextNode !== null) {
       this.tmp = this.tmp.nextNode;
       this.result.push(this.tmp.key);
+    }
+    return this.result;
+  }
+
+  valuesArray() {
+    this.tmp = this.firstNode;
+    this.result = [];
+    this.result.push(this.tmp.value);
+    while (this.tmp.nextNode !== null) {
+      this.tmp = this.tmp.nextNode;
+      this.result.push(this.tmp.value);
     }
     return this.result;
   }
