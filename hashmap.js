@@ -8,6 +8,14 @@ class HashMap {
     this.buckets = Array(this.capacity);
   }
 
+  growHashmap() {
+    let currLoadFactor = this.count / this.capacity;
+    if (currLoadFactor > this.loadFactor) {
+      this.capacity *= 2;
+    }
+    return this.capacity;
+  }
+
   hash(key) {
     let hashCode = 0;
     const primeNumber = 31;
@@ -25,16 +33,19 @@ class HashMap {
     if (hashedKey < 0 || hashedKey >= this.buckets.length) {
       throw new Error("Trying to access index out of bounds");
     }
+
     if (this.buckets[hashedKey]) {
+      if (this.has(key)) {
+        this.buckets[hashedKey].overwrite(key, value);
+        return;
+      }
       this.buckets[hashedKey].append(key, value);
       this.count++;
     } else {
       this.buckets[hashedKey] = new linkedList();
       this.buckets[hashedKey].append(key, value);
       this.count++;
-      return;
     }
-    this.buckets[hashedKey].overwrite(key, value);
   }
 
   get(key) {
@@ -130,7 +141,7 @@ test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
 
-console.log(test.entries());
+console.log(test.growHashmap());
 
 // test.set("apple", "brown");
 // test.set("banana", "yellow");
