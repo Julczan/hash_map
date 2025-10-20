@@ -1,6 +1,6 @@
-import linkedList from "./linked-list.js";
+import keysLinkedList from "./only-keys-linked-list.js";
 
-class HashMap {
+class HashSet {
   constructor() {
     this.loadFactor = 0.75;
     this.capacity = 16;
@@ -11,11 +11,12 @@ class HashMap {
   growHashmap() {
     this.capacity *= 2;
     this.count = 0;
-    let entriesCopy = this.entries();
+    let keysCopy = this.keys();
 
     this.buckets = Array(this.capacity);
-    for (let i = 0; i < entriesCopy.length; i++) {
-      this.set(...entriesCopy[i]);
+
+    for (let i = 0; i < keysCopy.length; i++) {
+      this.set(keysCopy[i]);
     }
   }
 
@@ -31,7 +32,7 @@ class HashMap {
     return hashCode;
   }
 
-  set(key, value) {
+  set(key) {
     let hashedKey = this.hash(key);
     if (hashedKey < 0 || hashedKey >= this.buckets.length) {
       throw new Error("Trying to access index out of bounds");
@@ -39,14 +40,14 @@ class HashMap {
 
     if (this.buckets[hashedKey]) {
       if (this.has(key)) {
-        this.buckets[hashedKey].overwrite(key, value);
+        this.buckets[hashedKey].overwrite(key);
         return;
       }
-      this.buckets[hashedKey].append(key, value);
+      this.buckets[hashedKey].append(key);
       this.count++;
     } else {
-      this.buckets[hashedKey] = new linkedList();
-      this.buckets[hashedKey].append(key, value);
+      this.buckets[hashedKey] = new keysLinkedList();
+      this.buckets[hashedKey].append(key);
       this.count++;
     }
 
@@ -115,41 +116,22 @@ class HashMap {
     }
     return result;
   }
-
-  values() {
-    let filteredArr = this.buckets.filter((element) => element);
-    let result = [];
-    for (let i = 0; i < filteredArr.length; i++) {
-      result.push(...filteredArr[i].valuesArray());
-    }
-    return result;
-  }
-
-  entries() {
-    let filteredArr = this.buckets.filter((element) => element);
-    let result = [];
-    for (let i = 0; i < filteredArr.length; i++) {
-      result.push(...filteredArr[i].pairsArray());
-    }
-    return result;
-  }
 }
 
-const test = new HashMap();
+const test = new HashSet();
 
-test.set("apple", "red");
-test.set("banana", "yellow");
-test.set("carrot", "orange");
-test.set("dog", "brown");
-test.set("elephant", "gray");
-test.set("frog", "green");
-test.set("grape", "purple");
-test.set("hat", "black");
-test.set("ice cream", "white");
-test.set("jacket", "blue");
-test.set("kite", "pink");
-test.set("lion", "golden");
-test.set("moon", "silver");
+test.set("apple");
+test.set("banana");
+test.set("carrot");
+test.set("elephant");
+test.set("frog");
+test.set("grape");
+test.set("hat");
+test.set("ice cream");
+test.set("jacket");
+test.set("kite");
+test.set("lion");
+test.set("moon");
 
 console.log(test.buckets);
 console.log(test.length());

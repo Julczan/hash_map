@@ -1,17 +1,27 @@
-class linkedList {
+class keysLinkedList {
   constructor() {
     this.firstNode = null;
   }
-  append(key, value) {
-    if (this.firstNode === null) this.prepend(key, value);
+  append(key) {
+    if (this.firstNode === null) this.prepend(key);
     else {
       this.tmp = this.firstNode;
       while (this.tmp.nextNode !== null) {
         this.tmp = this.tmp.nextNode;
       }
-      this.tmp.nextNode = new Node(key, value);
+      this.tmp.nextNode = new keysNode(key);
     }
   }
+  overwrite(key) {
+    this.tmp = this.firstNode;
+    while (this.tmp !== null && this.tmp.key !== key) {
+      this.tmp = this.tmp.nextNode;
+    }
+    if (this.tmp !== null) {
+      this.tmp.key = key;
+    }
+  }
+
   size() {
     this.count = 0;
     this.tmp = this.firstNode;
@@ -21,8 +31,8 @@ class linkedList {
     }
     return this.count;
   }
-  prepend(key, value) {
-    this.firstNode = new Node(key, value, this.firstNode);
+  prepend(key) {
+    this.firstNode = new keysNode(key, this.firstNode);
     return this.firstNode;
   }
   head() {
@@ -44,18 +54,9 @@ class linkedList {
       this.tmp = this.tmp.nextNode;
     }
     if (this.tmp !== null) {
-      return this.tmp.value;
+      return this.tmp.key;
     } else {
       return null;
-    }
-  }
-  overwrite(key, value) {
-    this.tmp = this.firstNode;
-    while (this.tmp !== null && this.tmp.key !== key) {
-      this.tmp = this.tmp.nextNode;
-    }
-    if (this.tmp !== null) {
-      this.tmp.value = value;
     }
   }
 
@@ -66,28 +67,6 @@ class linkedList {
     while (this.tmp.nextNode !== null) {
       this.tmp = this.tmp.nextNode;
       this.result.push(this.tmp.key);
-    }
-    return this.result;
-  }
-
-  valuesArray() {
-    this.tmp = this.firstNode;
-    this.result = [];
-    this.result.push(this.tmp.value);
-    while (this.tmp.nextNode !== null) {
-      this.tmp = this.tmp.nextNode;
-      this.result.push(this.tmp.value);
-    }
-    return this.result;
-  }
-
-  pairsArray() {
-    this.tmp = this.firstNode;
-    this.result = [];
-    this.result.push([this.tmp.key, this.tmp.value]);
-    while (this.tmp.nextNode !== null) {
-      this.tmp = this.tmp.nextNode;
-      this.result.push([this.tmp.key, this.tmp.value]);
     }
     return this.result;
   }
@@ -110,12 +89,11 @@ class linkedList {
   }
 }
 
-class Node {
-  constructor(key, value = null, nextNode = null) {
+class keysNode {
+  constructor(key, nextNode = null) {
     this.key = key;
-    this.value = value;
     this.nextNode = nextNode;
   }
 }
 
-export default linkedList;
+export default keysLinkedList;
